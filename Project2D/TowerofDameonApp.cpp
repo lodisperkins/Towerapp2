@@ -17,17 +17,11 @@ bool TowerofDameonApp::startup()
 {
 	m_2dRenderer = new aie::Renderer2D();
 	m_tower = new Game;
-	m_tower->item_Shop.shop = new aie::Texture("./textures/shop.png");
-	m_tower->item_Shop.shopkeep = new aie::Texture("./textures/sell.png");
-	m_tower->item_Shop.hero = new aie::Texture("./textures/sprites/Hero1Back.png");
-	m_font = new aie::Font("./font/myfont.ttf", 32);
 	
-	m_tower->initializeshop();
+	m_font = new aie::Font("./font/myfont.ttf", 32);
 	m_tower->initializeladder();
 
-	m_tower->player = new Hero;
-	m_tower->player->initalizeHero();
-	
+	m_tower->gamestate = Game::newGame;
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -40,44 +34,52 @@ void TowerofDameonApp::shutdown()
 {
 	delete m_2dRenderer;
 	delete m_tower->item_Shop.shop;
-	delete m_tower->item_Shop.shopkeep;
 }
 
 void TowerofDameonApp::update(float deltaTime)
 {
 	
-	
 	m_timer += deltaTime;
 	
 	// input example
 	aie::Input* input = aie::Input::getInstance();
-		switch (gamestate)
+		switch (m_tower->gamestate)
 		{
-		case newGame:
-		{
-			int i = 0;
-			m_tower->gamestate = Game::newGame;
-			m_tower->Start.StartGame(i,m_tower->player);
-			if (i == 2)
+			case Game::newGame:
 			{
-				gamestate = inBattle;
+				m_tower->initializeshop();
+				
+
+				m_tower->player = new Hero;
+				m_tower->player->initalizeHero();
+				int i = 0;
+				m_tower->gamestate = Game::newGame;
+				m_tower->Start.StartGame(i,m_tower->player);
+				if (i == 2)
+				{
+					m_tower->gamestate = Game::inBattle;
+				}
+				break;
 			}
-			break;
-		}
-		case inShop:
-		{
-			m_tower->shop(m_tower->player);
-			break;
-		}
-		case inBattle:
-		{
-			m_tower->battleladder(m_tower->player);
-			break;
-		}
-		case(inContinue):
-		{
-			break;
-		}
+			case Game::inShop:
+			{
+				m_tower->shop(m_tower->player);
+				break;
+			}
+			case Game::inBattle:
+			{
+				m_tower->battleladder(m_tower->player);
+				break;
+			}
+			case(Game::inContinue):
+			{
+				m_tower->Continue();
+				break;
+			}
+			case(Game::endGame):
+			{
+
+			}
 		}
 
 	// exit the application
@@ -98,7 +100,7 @@ void TowerofDameonApp::draw()
 	// begin drawing sprites
 	
 
-	m_tower->draw(m_2dRenderer,gamestate,m_timer*8, m_font);
+	m_tower->draw(m_2dRenderer,m_tower->gamestate,m_timer*8, m_font);
 
 	
 

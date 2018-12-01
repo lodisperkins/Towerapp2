@@ -201,6 +201,126 @@ void Game::initializeladder()
 	currentEnemy = *currentEnemyPtr;
 }
 
+void Game::initializenewladder(Hero *player)
+{
+	//Just a quickly made list of enemy attacks:
+	//can mix n match.
+
+	///////////////////////////////////
+	//The Juggler's Attacks
+	Attack throwball;
+	throwball.mDamage = 15;
+
+	Attack cynicalSlap;
+	cynicalSlap.mDamage = 35;
+
+	Attack balloonBomb;
+	balloonBomb.mDamage = 18;
+	///////////////////////////////////
+	//Kusunoki Masashige's Attacks
+	Attack samuraiSlash;
+	samuraiSlash.mDamage = 45;
+
+	Attack shuriken;
+	shuriken.mDamage = 24;
+
+	Attack shogunRage;
+	shogunRage.mDamage = 60;
+	///////////////////////////////////
+	//Jann's Attacks
+	Attack whirlwind;
+	whirlwind.mDamage = 22;
+
+	Attack shapeShift;
+	shapeShift.mDamage = 33;
+
+	Attack demonicScream;
+	demonicScream.mDamage = 12;
+	///////////////////////////////////
+	//Deogen's Attacks
+	Attack unholyBlast;
+	unholyBlast.mDamage = 55;
+
+	Attack silentDash;
+	silentDash.mDamage = 18;
+
+	Attack spookyClaw;
+	spookyClaw.mDamage = 20;
+	///////////////////////////////////
+	//George Sands' Attacks
+	Attack houndBite;
+	houndBite.mDamage = 12;
+
+	Attack werewolfSlash;
+	werewolfSlash.mDamage = 30;
+
+	Attack fullMoonWrath;
+	fullMoonWrath.mDamage = 46;
+	///////////////////////////////////
+	//Dameon The Necromancer's Attacks
+	Attack shadowBurst;
+	shadowBurst.mDamage = 22;
+
+	Attack undeadCasting;
+	undeadCasting.mDamage = 66;
+
+	Attack necromancingStorm;
+	necromancingStorm.mDamage = 46;
+
+	//possible critical move or a boss type move:
+	Attack apocalypticPlague;
+	apocalypticPlague.mDamage = 70;
+	///////////////////////////////////
+
+	Attack jugglerAttacks[3] = { throwball , cynicalSlap, balloonBomb };
+	Attack kusunokiAttacks[3] = { samuraiSlash , shuriken, shogunRage };
+	Attack jannAttacks[3] = { whirlwind , shapeShift, demonicScream };
+	Attack deogenAttacks[3] = { unholyBlast , silentDash, spookyClaw };
+	Attack georgeAttacks[3] = { houndBite, werewolfSlash, fullMoonWrath };
+	Attack dameonAttacks[4] = { shadowBurst, undeadCasting, necromancingStorm, apocalypticPlague };
+	Attack newenemyattacks[3] = { player->getAttacks(0),player->getAttacks(1),player->getAttacks(3) };
+
+	aie::Texture*       enemy1Texture = new aie::Texture("./textures/EnemySprites/Enemy1.png");
+	aie::Texture*       enemy2Texture = new aie::Texture("./textures/EnemySprites/Enemy2.png");
+	aie::Texture*       enemy3Texture = new aie::Texture("./textures/EnemySprites/Enemy3.png");
+	aie::Texture*       enemy4Texture = new aie::Texture("./textures/EnemySprites/Enemy4.png");
+	aie::Texture*       enemy5Texture = new aie::Texture("./textures/EnemySprites/Enemy5.png");
+	aie::Texture*       bossTexture = new aie::Texture("./textures/EnemySprites/Boss.png");
+
+	//H	//D  //S   //A
+	Enemy* enemy1 = new Enemy("The Juggler", jugglerAttacks, enemy1Texture, 100.0, 5.0, .2, 20, 90);
+	Enemy* enemy2 = new Enemy("Kusunoki Masashige", kusunokiAttacks, enemy2Texture, 150.0, 20.0, .15, 15, 93);
+	Enemy* enemy3 = new Enemy("Jann", jannAttacks, enemy3Texture, 300.0, 35.0, .1, 10, 90);
+	Enemy* enemy4 = new Enemy("Deogen", deogenAttacks, enemy4Texture, 350.0, 15.0, .1, 5, 85);
+	Enemy* enemy5 = new Enemy("George Sands", georgeAttacks, enemy5Texture, 400.0, 40.0, .16, 30, 95);
+	Enemy* boss = new Enemy("Dameon The Necromancer", dameonAttacks, bossTexture, 400.0, 24.0, .3, 35, 80);
+	Enemy* explayer = new Enemy("Corrupted Hero", newenemyattacks, player->charTexture, player->getHealth(), 48.0, .6, 10, 90);
+
+	enemyLadder.initialize();
+
+	enemyLadder.insertlast(*enemy1);
+	enemyLadder.insertlast(*enemy2);
+	enemyLadder.insertlast(*enemy3);
+	enemyLadder.insertlast(*enemy4);
+	enemyLadder.insertlast(*enemy5);
+	enemyLadder.insertlast(*explayer);
+	currentEnemyPtr = enemyLadder.begin();
+	currentEnemy = *currentEnemyPtr;
+}
+
+void Game::gameEnd()
+{
+	if (ImGui::Button("Play Again?", ImVec2(200, 100)))
+	{
+		gamestate = newGame;
+		initializenewladder(player);
+		delete player;
+		item_Shop.destroy();
+		enemyLadder.destroy();
+	}
+}
+
+
 
 
 void Game::draw(aie::Renderer2D * renderer, int state, int timer, aie::Font*font)
@@ -221,12 +341,17 @@ void Game::draw(aie::Renderer2D * renderer, int state, int timer, aie::Font*font
 	}
 	case inContinue:
 	{
-		int i;
-		between.draw(renderer,timer,font,player,i);
+		between.draw(renderer,timer,font,player);
+		break;
 	}
 	case newGame:
 	{
 		Start.draw(renderer, timer, font);
+		break;
+	}
+	case endGame:
+	{
+		between.draw(renderer,timer,font,player);
 		break;
 	}
 		break;
@@ -238,131 +363,217 @@ void Game::battleladder(Hero*&player)
 {
 	switch (ladderstate)
 	{
-	case playerturn:
+		
+		case playerturn:
+			{
+				if (currentEnemyPtr.current->info.getHealth() < 0)
+					{
+						gamestate = victory;
+					}
+				else
+				{
+					if (ImGui::Button("Attack", ImVec2(100, 100)))
+					{
+						ladderstate = viewattacks;
+						break;
+					}
+					if (ImGui::Button("Defend", ImVec2(100, 100)))
+					{
+						ladderstate = defending;
+						break;
+					}
+					if (ImGui::Button("View Stats", ImVec2(100, 100)))
+					{
+						item_Shop.shopstate = Shop::viewUpgrades;
+						break;
+					}
+			}
+			break;
+		}
+		case enemyturn:
+		{
+			srand(time(NULL));
+			echoice = rand() % 3;
+			if (player->getHealth() < 0)
+			{
+				gamestate = inContinue;
+			}
+			else
+			{
+				if (echoice > 2)
+				{
+					if (player->getHealth() > 0)
+					{
+						currentEnemyPtr.current->info.defend();
+						ladderstate = playerturn;
+					}
+					else
+					{
+						gamestate = inContinue;
+					}
+				}
+				else
+				{
+					if (player->getHealth() > 0)
+					{
+						ptr = &*player;
+						currentEnemyPtr.current->info.fight(*ptr, echoice);
+						currentEnemyPtr.current->info.enemystate = Enemy::attacking;
+						ladderstate = playerturn;
+					}
+					else
+					{
+						gamestate = inContinue;
+						break;
+					}
+
+				}
+			}
+
+			break;
+		}
+		case viewattacks:
+		{
+			if (ImGui::Button(player->getAttackName(0), ImVec2(200, 100)))
+			{
+				pchoice = 0;
+				if (currentEnemyPtr.current->info.getHealth() > 0)
+				{
+					player->playerstate = Hero::Attacking;
+					player->fight(currentEnemyPtr.current->info, 0);
+				
+					ladderstate = enemyturn;
+					break;
+				
+				}
+				else 
+				{
+					currentEnemyPtr=currentEnemyPtr.current->link;
+					enemyLadder.deleteNode(currentEnemyPtr.current->info);
+				
+					ladderstate = victory;
+					break;
+				}
+				break;
+			}
+			if (ImGui::Button(player->getAttackName(1), ImVec2(200, 100)))
+			{
+				pchoice = 1;
+				if (currentEnemyPtr.current->info.getHealth() > 0)
+				{
+					player->playerstate = Hero::Attacking;
+					player->fight(currentEnemyPtr.current->info, 1);
+
+					ladderstate = enemyturn;
+					break;
+				}
+				else
+				{
+					currentEnemyPtr = currentEnemyPtr.current->link;
+					enemyLadder.deleteNode(currentEnemyPtr.current->info);
+
+					ladderstate = victory;
+					break;
+				}
+			}
+			if (ImGui::Button(player->getAttackName(2), ImVec2(200, 100)))
+			{
+				pchoice = 2;
+				if (currentEnemyPtr.current->info.getHealth() > 0)
+				{
+					player->playerstate = Hero::Attacking;
+					player->fight(currentEnemyPtr.current->info, 2);
+
+					ladderstate = enemyturn;
+				}
+				else
+				{
+
+					currentEnemyPtr = currentEnemyPtr.current->link;
+					enemyLadder.deleteNode(currentEnemyPtr.current->info);
+
+					ladderstate = victory;
+					break;
+				}
+			}
+			break;
+		}
+		case defending:
+		{
+			player->playerstate = Hero::Defending;
+			ladderstate = enemyturn;
+			break;
+		}
+		case victory:
+		{
+			if (enemyLadder.isEmpty())
+			{
+				gamestate = endGame;
+				break;
+			}
+			else
+			{
+				player->playerstate = Hero::victory;
+				if (ImGui::Button("Go to Shop", ImVec2(200, 100)))
+				{
+					gamestate = inShop;
+					break;
+				}
+				if (ImGui::Button("Go to \n next battle", ImVec2(200, 100)))
+				{
+					gamestate = inBattle;
+					ladderstate = playerturn;
+					break;
+				}
+			}
+			break;
+		}
+
+	}
+}
+
+void Game::Continue()
+{
+	switch (between.choice)
 	{
-		if (ImGui::Button("Attack", ImVec2(100, 100)))
+	case Continue::start:
+	{
+		if (ImGui::Button("Hell Yeah!!", ImVec2(100, 100)))
 		{
-			ladderstate = viewattacks;
-			break;
+			if (between.subtractGold(player))
+			{
+				between.choice = Continue::play;
+				break;
+			}
+			else
+			{
+				between.choice = Continue::broke;
+				break;
+			}
 		}
-		if (ImGui::Button("Defend", ImVec2(100, 100)))
+		if (ImGui::Button("Nah", ImVec2(100, 100)))
 		{
-			ladderstate = defending;
-			break;
-		}
-		if (ImGui::Button("View Stats", ImVec2(100, 100)))
-		{
-			item_Shop.shopstate = Shop::viewUpgrades;
+			between.choice = Continue::end;
 			break;
 		}
 		break;
 	}
-	case enemyturn:
+	case Continue::play:
 	{
-		srand(time(NULL));
-		echoice = rand() % 3;
-
-		if (echoice > 2)
+		if (ImGui::Button("I need to \n buy some stuff..", ImVec2(100, 100)))
 		{
-			if (player->getHealth() > 0)
-			{
-				currentEnemy.defend();
-				ladderstate = playerturn;
-			}
-			else
-			{
-				ladderstate = inContinue;
-			}
-		}
-		else
-		{
-			echoice = rand() % 2+1;
-			if(player->getHealth() > 0)
-			{	
-				ptr = &*player;
-				currentEnemy.fight(*ptr,echoice);
-				currentEnemy.enemystate=Enemy::attacking;
-				ladderstate = playerturn;
-			}
-			else
-			{
-				ladderstate = inContinue;
-			}
-			
-		}
-
-		break;
-	}
-	case viewattacks:
-	{
-		if (ImGui::Button(player->getAttackName(0), ImVec2(200, 100)))
-		{
-			pchoice = 0;
-			if (currentEnemyPtr.current->info.getHealth() > 0)
-			{
-				player->playerstate = Hero::Attacking;
-				player->fight(currentEnemyPtr.current->info, 0);
-				
-				ladderstate = enemyturn;
-				
-			}
-			else 
-			{
-				currentEnemyPtr=currentEnemyPtr.current->link;
-				enemyLadder.deleteNode(currentEnemyPtr.current->info);
-				
-				gamestate = inContinue;
-				break;
-			}
+			gamestate = inShop;
 			break;
 		}
-		if (ImGui::Button(player->getAttackName(1), ImVec2(200, 100)))
+		if (ImGui::Button("I want \n to fight!", ImVec2(100, 100)))
 		{
-			pchoice = 1;
-			if (currentEnemyPtr.current->info.getHealth() > 0)
-			{
-				player->playerstate = Hero::Attacking;
-				player->fight(currentEnemyPtr.current->info, 1);
-
-				ladderstate = enemyturn;
-			}
-			else
-			{
-				currentEnemyPtr = currentEnemyPtr.current->link;
-				enemyLadder.deleteNode(currentEnemyPtr.current->info);
-
-				gamestate = inContinue;
-				break;
-			}
-		}
-		if (ImGui::Button(player->getAttackName(2), ImVec2(200, 100)))
-		{
-			pchoice = 2;
-			if (currentEnemyPtr.current->info.getHealth() > 0)
-			{
-				player->playerstate = Hero::Attacking;
-				player->fight(currentEnemyPtr.current->info, 2);
-
-				ladderstate = enemyturn;
-			}
-			else
-			{
-
-				currentEnemyPtr = currentEnemyPtr.current->link;
-				enemyLadder.deleteNode(currentEnemyPtr.current->info);
-
-				gamestate = inContinue;
-				break;
-			}
+			gamestate = inBattle;
+			break;
 		}
 		break;
 	}
-	case defending:
-	{
-		player->playerstate = Hero::Defending;
-		ladderstate = enemyturn;
 	}
-	}
+
 }
 
 
@@ -397,21 +608,49 @@ void Game::shop(Hero* &player)
 	}
 	case Shop::wait:
 	{
-		if (ImGui::Button("Attack Items", ImVec2(100, 100)))
+		switch (item_Shop.itemlists)
+
 		{
-			item_Shop.shopstate = Shop::viewAttackItems;
-			break;
+		case Shop::shoplist:
+		{	
+			if (ImGui::Button("Attack Items", ImVec2(100, 100)))
+			{
+				item_Shop.shopstate = Shop::viewAttackItems;
+				break;
+			}
+			if (ImGui::Button("Defense Items", ImVec2(100, 100)))
+			{
+				item_Shop.shopstate = Shop::viewDefenseItems;
+				break;
+			}
+			if (ImGui::Button("Upgrade Stats", ImVec2(100, 100)))
+			{
+				item_Shop.shopstate = Shop::viewUpgrades;
+				break;
+			}
+			if (ImGui::Button("Attack List", ImVec2(100, 100)))
+			{
+				item_Shop.shopstate = Shop::viewUpgrades;
+				break;
+			}
+			if (ImGui::Button("Armor Bag", ImVec2(100, 100)))
+			{
+				item_Shop.shopstate = Shop::viewUpgrades;
+				break;
+			}
 		}
-		if (ImGui::Button("Defense Items", ImVec2(100, 100)))
+		case Shop::attacklist:
 		{
-			item_Shop.shopstate = Shop::viewDefenseItems;
-			break;
+			for (int i; i < player->attackBag.size(); i++)
+			{
+				if (ImGui::Button(player->attackBag.at(i).name, ImVec2(100, 100)))
+				{
+					break;
+				}
+			}
 		}
-		if (ImGui::Button("Upgrade Stats", ImVec2(100, 100)))
-		{
-			item_Shop.shopstate = Shop::viewUpgrades;
-			break;
 		}
+
 		break;
 	}
 	case Shop::viewAttackItems:
@@ -432,6 +671,8 @@ void Game::shop(Hero* &player)
 				}
 			}
 		}
+
+		break;
 		
 	}
 	case Shop::viewDefenseItems:
@@ -452,6 +693,7 @@ void Game::shop(Hero* &player)
 				}
 			}
 		}
+		break;
 	}
 	case Shop::viewUpgrades:
 	{
@@ -508,75 +750,5 @@ void Game::shop(Hero* &player)
 	break;
 	}
 
-	/*system("cls");
-	char pinput;
-	char pchoice;
-	std::cout << "Asher: Ah! Well if it isn't " << player->getName() << "! \n" <<
-	"How may I aid you today my suicidal friend? \n";
-	std::cout << "\n";
-	std::cout << " Press 1 to look at new attacks, 2 for a new potion, 3 for upgrades, or q to quit.\n ";
-	std::cin >> pchoice;
-	while (pchoice != 'q')
-	{
-	switch (pchoice)
-	{
-	case(1):
-	{	system("cls");
-	std::cout << "Asher: Need a new move eh? I guess spamming the attack button wasn't enough? \n";
-	item_Shop.viewAttacks();
-	std::cout << "\n";
-	std::cout << "Input the number of the item you want or press b to go back:  "; std::cin >> pchoice;
-	if (pchoice < 'b')
-	{
-	player->buy_Attack(item_Shop, pchoice);
-	break;
-	}
-	else
-	{
-	break;
-	}
-	}
-	case(2):
-	{
-	system("cls");
-	std::cout << "Asher: Please enjoy one of our premium performance enhancing elixers. Now with only 25,000 calories! \n";
-	item_Shop.viewArmor();
-	std::cout << "\n";
-	std::cout << "Input the number of the item you want or press b to go back:  "; std::cin >> pchoice;
-	if (pchoice < 'b')
-	{
-	player->buy_Armor(item_Shop, pchoice);
-	break;
-	}
-	else
-	{
-	break;
-	}
-	}
-	case(3):
-	{
-	system("cls");
-	std::cout << "Asher: So you need to get more physically fit? Hehe, why workout when you can pay me? \n";
-	std::cout << "Enter (1) to level up your Health\n";
-	std::cout << "Enter (2) to level up your Defense\n";
-	std::cout << "Enter (3) to level up your Accuracy\n";
-	std::cout << "Enter (4) to level up your Strength\n\n";
-	std::cout << "\n";
-	std::cout << "Input the number of the item you want or press b to go back:  "; std::cin >> pchoice;
-	if (pchoice < 'b')
-	{
-	player->upgrade(pchoice);
-	break;
-	}
-	else
-	{
-	break;
-	}
-	}
-	}
-	system("cls");
-	std::cout << " Press 1 to look at new attacks, 2 for a new potion, 3 for upgrades, or q to quit.\n ";
-	std::cin >> pchoice;
-	}*/
-
+	
 }

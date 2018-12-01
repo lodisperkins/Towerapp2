@@ -17,8 +17,9 @@ protected:
 
 	float m_cameraX, m_cameraY;
 	float m_timer;
-	enum mode { newGame,inShop, inBattle, inContinue };
-	mode gamestate =  newGame;
+	/*enum mode { newGame,inShop, inBattle, inContinue };
+	mode*/ 
+		
 public:
 	TowerofDameonApp();
 	virtual bool startup();

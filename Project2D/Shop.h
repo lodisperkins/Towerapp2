@@ -27,6 +27,7 @@ public:
 	void draw(aie::Renderer2D*,int timer,aie::Font*);
 	void drawtext(aie::Renderer2D * renderer, aie::Font*);
 	void drawsprite(aie::Renderer2D*, int timer, aie::Font*);
+	void destroy();
 
 	int currentGold;
 
@@ -34,6 +35,8 @@ public:
 	storestate shopstate=welcome;	
 	enum sellstate {idle,sold,greet};
 	sellstate spritestate;
+	enum menustate{ attacklist, armorlist,shoplist };
+	menustate itemlists= shoplist;
 
 	aie::Texture*       idletexture = new aie::Texture("./textures/idle.png");
 	aie::Texture*       welcometexture = new aie::Texture("./textures/welcome.png");

@@ -124,8 +124,8 @@ void Hero::unequipAttack(int choice)
 //needs to be looked at
 void Hero::initalizeHero()
 {
-	mGold = 4;
-	mHealth = 100;
+	mGold = 40000;
+	mHealth = 0;
 	mDefense = 5;
 	mStrength = .05f;
 	mAccuracy.min = 30;
@@ -412,6 +412,11 @@ void Hero::drawtext(aie::Renderer2D *renderer, aie::Font*font,int choice)
 		renderer->drawText(font, "You blocked their attack!", 300, 100, 100);
 		break;
 	}
+	case victory:
+	{
+		renderer->drawText(font, "You destroyed them!", 300, 100, 100);
+		break;
+	}
 
 	}
 }
@@ -432,4 +437,9 @@ void Hero::draw(aie::Renderer2D*renderer, int timer, aie::Font* font,int choice)
 	drawsprite(renderer, timer, font);
 	//, 300, 100, 100);
 
+}
+
+Attack Hero::getAttacks(int choice)
+{
+	return listofattacks[choice];
 }

@@ -167,3 +167,9 @@ void Shop::drawsprite(aie::Renderer2D *renderer, int timer, aie::Font *)
 	break;
 	}
 }
+
+void Shop::destroy()
+{
+	attackstock.~vector();
+	armorstock.~vector();
+}

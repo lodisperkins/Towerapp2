@@ -26,12 +26,14 @@ public:
 	newGameClass Start;
 	Continue between;
 	void initializeladder();
+	void initializenewladder(Hero*);
+	void gameEnd();
 	const char* speak(int num);
 	void draw(aie::Renderer2D * renderer, int state,int timer,aie::Font*);
 	Character* ptr;
 	int pchoice;
 	int echoice;
-	enum current { newGame,inShop, inBattle, inContinue,playerturn,enemyturn,viewstats,viewattacks, defending};
+	enum current { newGame,inShop, inBattle, inContinue,playerturn,enemyturn,viewstats,viewattacks, defending,victory,endGame};
 	current gamestate;
 	current ladderstate = playerturn;
 	
@@ -39,6 +41,7 @@ public:
 
 	//the combat:
 	void battleladder(Hero*&);
+	void Continue();
 	//linked list:
 	unorderedList<Enemy> enemyLadder;
 	

@@ -13,64 +13,45 @@ bool Continue::subtractGold(Hero * player)
 	}
 }
 
-void Continue::draw(aie::Renderer2D *renderer, int timer, aie::Font *font, Hero * player, int& state)
+Continue::Continue()
 {
-	renderer->drawSprite(continueStage, 600, 450, 500, 583);
-	renderer->drawSprite(hero, 600, 400, 57, 92);
-
-	drawtext(renderer, font, player, state);
 }
 
-void Continue::drawtext(aie::Renderer2D * renderer, aie::Font *font, Hero * player, int& state)
+void Continue::draw(aie::Renderer2D *renderer, int timer, aie::Font *font, Hero * player)
+{
+	renderer->drawSprite(continueStage, 600, 450, 500, 583);
+	renderer->drawSprite(hero, 600, 250, 57, 92);
+
+	drawtext(renderer, font, player);
+}
+
+void Continue::drawtext(aie::Renderer2D * renderer, aie::Font *font, Hero * player)
 {
 	switch (choice)
 	{
 	case start:
 	{
-		if (ImGui::Button("Hell Yeah!!", ImVec2(100, 100)))
-		{
-			choice = play;
-			break;
-		}
-		if (ImGui::Button("Nah", ImVec2(100, 100)))
-		{
-			choice = end;
-			break;
-		}
+		renderer->drawText(font, "Continue?", 300, 100, 100);
+		break;
+		
 	}
+
 	case(play):
 	{
-		if (subtractGold(player))
-		{
-			if (ImGui::Button("I need to buy some stuff..", ImVec2(100, 100)))
-			{
-				choice = shop;
-				break;
-			}
-			if (ImGui::Button("I want to fight!", ImVec2(100, 100)))
-			{
-				choice = battle;
-				break;
-			}
-		}
-		else if (subtractGold(player) == false)
-		{
-			renderer->drawText(font, "You do not have enough gold to continue", 300, 100, 100);
-			choice = end;
+			renderer->drawText(font, "Ready to go again?", 300, 100, 100);
 			break;
-		}
 	}
-	case(shop):
+
+	case broke:
 	{
-		state = 1;
-	}
-	case(battle):
-	{
-		state = 2;
+		renderer->drawText(font, "You do not have enough gold to continue", 300, 100, 100);
+		renderer->drawText(font, "Press escape to exit game.", 300, 50, 100);
+		break;
 	}
 	case(end):
 	{
-
+		renderer->drawText(font, "Press escape to exit game.", 300, 100, 100);
+		break;
 	}
 	}
 }

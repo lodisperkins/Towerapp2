@@ -23,11 +23,12 @@ public:
 	//The player has two lists that store their previously bought attacks and armor for later use
 	std::vector<Armor> armorBag;
 	std::vector<Attack> attackBag;
-	enum current {Attacking,Defending,stats,blocked};
+	enum current {Attacking,Defending,stats,blocked,victory};
 	current playerstate;
 	void drawtext(aie::Renderer2D*,aie::Font*,int);
 	void drawsprite(aie::Renderer2D*renderer,int timer,aie::Font* font);
 	void draw(aie::Renderer2D*renderer, int timer, aie::Font* font,int choice = 0);
+	Attack getAttacks(int i);
 
 	//The takeDamage function is called in the fight function and is only used to 
 	//decrement the enemy's health
