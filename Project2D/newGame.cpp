@@ -26,6 +26,13 @@ void newGameClass::drawText(aie::Renderer2D* renderer, aie::Font* font)
 	}
 }
 
+void newGameClass::refresh()
+{
+	count = 0;
+	startstate = talk;
+	talknum = 1;
+}
+
 const char * newGameClass::speak(int num)
 {
 	const char*say;

@@ -3,8 +3,7 @@
 
 class Continue
 {
-private:
-	int numofcontinues=3;
+
 public:
 	Continue();
 

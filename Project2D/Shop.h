@@ -23,7 +23,8 @@ public:
 	const char* viewAttacks(int num);
 	const char*viewArmor(int num);
 	int getstocksize(int choice);
-
+	bool affordattack(int item, int gold);
+	bool afforddefense(int item, int gold);
 	void draw(aie::Renderer2D*,int timer,aie::Font*);
 	void drawtext(aie::Renderer2D * renderer, aie::Font*);
 	void drawsprite(aie::Renderer2D*, int timer, aie::Font*);
@@ -31,11 +32,11 @@ public:
 
 	int currentGold;
 
-	enum storestate {welcome,sell,viewItems,viewDefenseItems,viewAttackItems,viewUpgrades,bought,wait};
+	enum storestate {welcome,sell,viewItems,viewDefenseItems,viewAttackItems,viewUpgrades,bought,wait,broke};
 	storestate shopstate=welcome;	
 	enum sellstate {idle,sold,greet};
 	sellstate spritestate;
-	enum menustate{ attacklist, armorlist,shoplist };
+	enum menustate{ attacklist, armorlist,shoplist,replaceattack, replacearmor };
 	menustate itemlists= shoplist;
 
 	aie::Texture*       idletexture = new aie::Texture("./textures/idle.png");

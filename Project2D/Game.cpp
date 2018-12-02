@@ -55,17 +55,17 @@ void Game::initializeshop()
 	srand(time(NULL));
 
 
-	Attack ultimate3("Nova Strike", 100.0, 2);
-	Attack ultimate2("Earth Shattering Strike", 50 * rand() % 2, 3);
-	Attack ultimate1("Revenger Assault", 25 * rand() % 5, 2);
+	Attack ultimate3("Nova Strike! -100hp", 100.0, 2);
+	Attack ultimate2("Earth Shattering Strike! -50x", 50 * rand() % 2, 3);
+	Attack ultimate1("Revenger Assault! -25x", 25 * rand() % 5, 2);
 
-	Attack intermediate3("Sonic Rush", 35.0, 7);
-	Attack intermediate2("Lightning Kick", 25.0, 10);
-	Attack intermediate1("Axle Combination", 30.0, 5);
+	Attack intermediate3("Sonic Rush! -35hp", 35.0, 7);
+	Attack intermediate2("Lightning Kick! -25hp", 25.0, 10);
+	Attack intermediate1("Axle Combination! -30hp", 30.0, 5);
 
-	Attack basic3("Force Palm", 5.0, 30);
-	Attack basic2("Focus Punch", 12.0, 12);
-	Attack basic1("Close Combat", 10.0, 15);
+	Attack basic3("Force Palm! -5hp", 5.0, 30);
+	Attack basic2("Focus Punch! -12hp", 12.0, 12);
+	Attack basic1("Close Combat! -10hp", 10.0, 15);
 
 
 
@@ -103,68 +103,67 @@ void Game::initializeladder()
 
 	///////////////////////////////////
 	//The Juggler's Attacks
-	Attack throwball;
-	throwball.mDamage = 15;
+	Attack throwball("Throwball -15hp", 15.f, 25);
 
-	Attack cynicalSlap;
-	cynicalSlap.mDamage = 35;
 
-	Attack balloonBomb;
-	balloonBomb.mDamage = 18;
+	Attack cynicalSlap("Cynical Slap -35hp", 35.f, 30);
+
+
+	Attack balloonBomb("Balloon Bomb -18hp", 18.f, 20);
+
 	///////////////////////////////////
 	//Kusunoki Masashige's Attacks
-	Attack samuraiSlash;
-	samuraiSlash.mDamage = 45;
+	Attack samuraiSlash("Samurai Slash -45hp", 45.f, 15);
 
-	Attack shuriken;
-	shuriken.mDamage = 24;
 
-	Attack shogunRage;
-	shogunRage.mDamage = 60;
+	Attack shuriken("Shuriken -24hp", 24.f, 20);
+
+
+	Attack shogunRage("Shogun Rage -60hp", 60.f, 5);
+	
 	///////////////////////////////////
 	//Jann's Attacks
-	Attack whirlwind;
-	whirlwind.mDamage = 22;
+	Attack whirlwind("WhirlWind! -22hp", 22.f, 12);
+	
 
-	Attack shapeShift;
-	shapeShift.mDamage = 33;
+	Attack shapeShift("Shape Shift! -33hp", 33.f, 10);
+	
 
-	Attack demonicScream;
-	demonicScream.mDamage = 12;
+	Attack demonicScream("Demonic Shout! -12hp", 12.f, 30);
+	
 	///////////////////////////////////
 	//Deogen's Attacks
-	Attack unholyBlast;
-	unholyBlast.mDamage = 55;
+	Attack unholyBlast("Unholy Blast! -55hp", 55.f, 10);
+	
 
-	Attack silentDash;
-	silentDash.mDamage = 18;
+	Attack silentDash("Silent Dash! -18hp", 18.f, 20);
+	
 
-	Attack spookyClaw;
-	spookyClaw.mDamage = 20;
+	Attack spookyClaw("Spooky Claw! -20hp", 20.f, 15);
+	
 	///////////////////////////////////
 	//George Sands' Attacks
-	Attack houndBite;
-	houndBite.mDamage = 12;
+	Attack houndBite("Hound Bite! -12hp", 12.f, 40);
 
-	Attack werewolfSlash;
-	werewolfSlash.mDamage = 30;
+	Attack werewolfSlash("Werewolf Slash! -20hp", 20.f, 15);
 
-	Attack fullMoonWrath;
+
+	Attack fullMoonWrath("Full Moon Wrath! -46hp", 46.f, 25);
 	fullMoonWrath.mDamage = 46;
 	///////////////////////////////////
 	//Dameon The Necromancer's Attacks
-	Attack shadowBurst;
+	Attack shadowBurst("Shadow Burst! -22hp", 22.f, 40);
 	shadowBurst.mDamage = 22;
 
-	Attack undeadCasting;
-	undeadCasting.mDamage = 66;
+	Attack undeadCasting("Undead Casting! -66hp", 66.f, 20);
+	
 
-	Attack necromancingStorm;
+	Attack necromancingStorm("Necromancing Storm! -46hp", 46.f, 15);
 	necromancingStorm.mDamage = 46;
 
 	//possible critical move or a boss type move:
-	Attack apocalypticPlague;
-	apocalypticPlague.mDamage = 70;
+	Attack apocalypticPlague("Apocalyptic Plague! -70hp", 20.f, 15);
+	
 	///////////////////////////////////
 
 	Attack jugglerAttacks[3] = { throwball , cynicalSlap, balloonBomb };
@@ -197,6 +196,7 @@ void Game::initializeladder()
 	enemyLadder.insertlast(*enemy3);
 	enemyLadder.insertlast(*enemy4);
 	enemyLadder.insertlast(*enemy5);
+	enemyLadder.insertlast(*boss);
 	currentEnemyPtr = enemyLadder.begin();
 	currentEnemy = *currentEnemyPtr;
 }
@@ -208,68 +208,66 @@ void Game::initializenewladder(Hero *player)
 
 	///////////////////////////////////
 	//The Juggler's Attacks
-	Attack throwball;
-	throwball.mDamage = 15;
+	Attack throwball("Throwball -15hp", 15.f, 25);
 
-	Attack cynicalSlap;
-	cynicalSlap.mDamage = 35;
 
-	Attack balloonBomb;
-	balloonBomb.mDamage = 18;
+	Attack cynicalSlap("Cynical Slap -35hp", 35.f, 30);
+
+
+	Attack balloonBomb("Balloon Bomb -18hp", 18.f, 20);
+
 	///////////////////////////////////
 	//Kusunoki Masashige's Attacks
-	Attack samuraiSlash;
-	samuraiSlash.mDamage = 45;
+	Attack samuraiSlash("Samurai Slash -45hp", 45.f, 15);
 
-	Attack shuriken;
-	shuriken.mDamage = 24;
 
-	Attack shogunRage;
-	shogunRage.mDamage = 60;
+	Attack shuriken("Shuriken -24hp", 24.f, 20);
+
+
+	Attack shogunRage("Shogun Rage -60hp", 60.f, 5);
+
 	///////////////////////////////////
 	//Jann's Attacks
-	Attack whirlwind;
-	whirlwind.mDamage = 22;
+	Attack whirlwind("WhirlWind! -22hp", 22.f, 12);
 
-	Attack shapeShift;
-	shapeShift.mDamage = 33;
 
-	Attack demonicScream;
-	demonicScream.mDamage = 12;
+	Attack shapeShift("Shape Shift! -33hp", 33.f, 10);
+
+
+	Attack demonicScream("Demonic Shout! -12hp", 12.f, 30);
+
 	///////////////////////////////////
 	//Deogen's Attacks
-	Attack unholyBlast;
-	unholyBlast.mDamage = 55;
+	Attack unholyBlast("Unholy Blast! -55hp", 55.f, 10);
 
-	Attack silentDash;
-	silentDash.mDamage = 18;
 
-	Attack spookyClaw;
-	spookyClaw.mDamage = 20;
+	Attack silentDash("Silent Dash! -18hp", 18.f, 20);
+
+
+	Attack spookyClaw("Spooky Claw! -20hp", 20.f, 15);
+
 	///////////////////////////////////
 	//George Sands' Attacks
-	Attack houndBite;
-	houndBite.mDamage = 12;
+	Attack houndBite("Hound Bite! -12hp", 12.f, 40);
 
-	Attack werewolfSlash;
-	werewolfSlash.mDamage = 30;
+	Attack werewolfSlash("Werewolf Slash! -20hp", 20.f, 15);
 
-	Attack fullMoonWrath;
+
+	Attack fullMoonWrath("Full Moon Wrath! -46hp", 46.f, 25);
 	fullMoonWrath.mDamage = 46;
 	///////////////////////////////////
 	//Dameon The Necromancer's Attacks
-	Attack shadowBurst;
+	Attack shadowBurst("Shadow Burst! -22hp", 22.f, 40);
 	shadowBurst.mDamage = 22;
 
-	Attack undeadCasting;
-	undeadCasting.mDamage = 66;
+	Attack undeadCasting("Undead Casting! -66hp", 66.f, 20);
 
-	Attack necromancingStorm;
+
+	Attack necromancingStorm("Necromancing Storm! -46hp", 46.f, 15);
 	necromancingStorm.mDamage = 46;
 
 	//possible critical move or a boss type move:
-	Attack apocalypticPlague;
-	apocalypticPlague.mDamage = 70;
+	Attack apocalypticPlague("Apocalyptic Plague! -70hp", 20.f, 15);
 	///////////////////////////////////
 
 	Attack jugglerAttacks[3] = { throwball , cynicalSlap, balloonBomb };
@@ -294,7 +292,7 @@ void Game::initializenewladder(Hero *player)
 	Enemy* enemy4 = new Enemy("Deogen", deogenAttacks, enemy4Texture, 350.0, 15.0, .1, 5, 85);
 	Enemy* enemy5 = new Enemy("George Sands", georgeAttacks, enemy5Texture, 400.0, 40.0, .16, 30, 95);
 	Enemy* boss = new Enemy("Dameon The Necromancer", dameonAttacks, bossTexture, 400.0, 24.0, .3, 35, 80);
-	Enemy* explayer = new Enemy("Corrupted Hero", newenemyattacks, player->charTexture, player->getHealth(), 48.0, .6, 10, 90);
+	Enemy* explayer = new Enemy("Corrupted Hero", newenemyattacks, player->charTexture,1000, 48.0, .6, 10, 90);
 
 	enemyLadder.initialize();
 
@@ -303,20 +301,26 @@ void Game::initializenewladder(Hero *player)
 	enemyLadder.insertlast(*enemy3);
 	enemyLadder.insertlast(*enemy4);
 	enemyLadder.insertlast(*enemy5);
+	enemyLadder.insertlast(*boss);
 	enemyLadder.insertlast(*explayer);
 	currentEnemyPtr = enemyLadder.begin();
 	currentEnemy = *currentEnemyPtr;
 }
 
-void Game::gameEnd()
+bool Game::gameEnd()
 {
+	between.choice = Continue::end;
 	if (ImGui::Button("Play Again?", ImVec2(200, 100)))
 	{
-		gamestate = newGame;
-		initializenewladder(player);
 		delete player;
 		item_Shop.destroy();
 		enemyLadder.destroy();
+		
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -368,7 +372,25 @@ void Game::battleladder(Hero*&player)
 			{
 				if (currentEnemyPtr.current->info.getHealth() < 0)
 					{
-						gamestate = victory;
+						if (enemyLadder.isEmpty())
+						{
+							gamestate = endGame;
+							break;
+						}
+						else
+						{
+							iterator<Enemy>* temp = new iterator<Enemy>;
+							*temp = currentEnemyPtr.current->link;
+							enemyLadder.deleteNode(currentEnemyPtr.current->info);
+							currentEnemyPtr = *temp;
+							delete temp;
+							ladderstate = victory;
+						}
+						if (enemyLadder.isEmpty())
+						{
+							gamestate = endGame;
+							break;
+						}
 					}
 				else
 				{
@@ -387,9 +409,9 @@ void Game::battleladder(Hero*&player)
 						item_Shop.shopstate = Shop::viewUpgrades;
 						break;
 					}
-			}
-			break;
-		}
+			    }
+			    break;
+		    }
 		case enemyturn:
 		{
 			srand(time(NULL));
@@ -397,6 +419,7 @@ void Game::battleladder(Hero*&player)
 			if (player->getHealth() < 0)
 			{
 				gamestate = inContinue;
+				break;
 			}
 			else
 			{
@@ -448,9 +471,11 @@ void Game::battleladder(Hero*&player)
 				}
 				else 
 				{
-					currentEnemyPtr=currentEnemyPtr.current->link;
+					iterator<Enemy>* temp = new iterator<Enemy>;
+					*temp = currentEnemyPtr.current->link;
 					enemyLadder.deleteNode(currentEnemyPtr.current->info);
-				
+					currentEnemyPtr = *temp;
+					delete temp;
 					ladderstate = victory;
 					break;
 				}
@@ -469,9 +494,11 @@ void Game::battleladder(Hero*&player)
 				}
 				else
 				{
-					currentEnemyPtr = currentEnemyPtr.current->link;
+					iterator<Enemy>* temp = new iterator<Enemy>;
+					*temp = currentEnemyPtr.current->link;
 					enemyLadder.deleteNode(currentEnemyPtr.current->info);
-
+					currentEnemyPtr = *temp;
+					delete temp;
 					ladderstate = victory;
 					break;
 				}
@@ -485,13 +512,16 @@ void Game::battleladder(Hero*&player)
 					player->fight(currentEnemyPtr.current->info, 2);
 
 					ladderstate = enemyturn;
+					break;
 				}
 				else
 				{
 
-					currentEnemyPtr = currentEnemyPtr.current->link;
+					iterator<Enemy>* temp = new iterator<Enemy>;
+					*temp = currentEnemyPtr.current->link;
 					enemyLadder.deleteNode(currentEnemyPtr.current->info);
-
+					currentEnemyPtr = *temp;
+					delete temp;
 					ladderstate = victory;
 					break;
 				}
@@ -506,6 +536,7 @@ void Game::battleladder(Hero*&player)
 		}
 		case victory:
 		{
+			player->reward();
 			if (enemyLadder.isEmpty())
 			{
 				gamestate = endGame;
@@ -568,6 +599,7 @@ void Game::Continue()
 		if (ImGui::Button("I want \n to fight!", ImVec2(100, 100)))
 		{
 			gamestate = inBattle;
+			player->revive();
 			break;
 		}
 		break;
@@ -584,7 +616,7 @@ Game::Game()
 
 void Game::shop(Hero* &player)
 {
-
+	int i;
 	switch (item_Shop.shopstate)
 	{
 	case Shop::welcome:
@@ -604,6 +636,11 @@ void Game::shop(Hero* &player)
 			item_Shop.shopstate = Shop::viewUpgrades;
 			break;
 		}
+		if (ImGui::Button("Leave Shop", ImVec2(200, 100)))
+		{
+			gamestate = inBattle;
+			break;
+		}
 		break;
 	}
 	case Shop::wait:
@@ -612,7 +649,7 @@ void Game::shop(Hero* &player)
 
 		{
 		case Shop::shoplist:
-		{	
+		{
 			if (ImGui::Button("Attack Items", ImVec2(100, 100)))
 			{
 				item_Shop.shopstate = Shop::viewAttackItems;
@@ -628,29 +665,110 @@ void Game::shop(Hero* &player)
 				item_Shop.shopstate = Shop::viewUpgrades;
 				break;
 			}
-			if (ImGui::Button("Attack List", ImVec2(100, 100)))
+			if (ImGui::Button("Equip Attacks", ImVec2(100, 100)))
 			{
-				item_Shop.shopstate = Shop::viewUpgrades;
+				item_Shop.itemlists = Shop::attacklist;
 				break;
 			}
-			if (ImGui::Button("Armor Bag", ImVec2(100, 100)))
+			if (ImGui::Button("Equip Potions", ImVec2(100, 100)))
 			{
-				item_Shop.shopstate = Shop::viewUpgrades;
+				item_Shop.itemlists = Shop::armorlist;
 				break;
 			}
+			if (ImGui::Button("Leave Shop", ImVec2(200, 100)))
+			{
+				gamestate = inBattle;
+				break;
+			}
+			break;
 		}
 		case Shop::attacklist:
 		{
-			for (int i; i < player->attackBag.size(); i++)
+			if (player->attackBag.empty())
 			{
-				if (ImGui::Button(player->attackBag.at(i).name, ImVec2(100, 100)))
+				break;
+			}
+			else
+			{
+				for (i = 0; i < player->attackBag.size(); i++)
 				{
+					if (ImGui::Button(player->attackBag.at(i).name, ImVec2(100, 100)))
+					{
+						pchoice = i;
+						item_Shop.itemlists = Shop::replaceattack;
+						break;
+					}
+				}
+				if (ImGui::Button("Back", ImVec2(200, 100)))
+				{
+					item_Shop.shopstate = Shop::wait;
 					break;
 				}
 			}
-		}
-		}
 
+			break;
+		}
+		case Shop::replaceattack:
+		{
+			if (ImGui::Button(player->getAttacks(0).name, ImVec2(100, 100)))
+			{
+
+				player->equipAttack(pchoice, 0);
+				item_Shop.itemlists = Shop::shoplist;
+				break;
+			}
+			if (ImGui::Button(player->getAttacks(1).name, ImVec2(100, 100)))
+			{
+
+				player->equipAttack(pchoice, 1);
+				item_Shop.itemlists = Shop::shoplist;
+				break;
+			}
+			if (ImGui::Button(player->getAttacks(2).name, ImVec2(100, 100)))
+			{
+
+				player->equipAttack(pchoice, 2);
+				item_Shop.itemlists = Shop::shoplist;
+				break;
+			}
+			if (ImGui::Button("Back", ImVec2(200, 100)))
+			{
+				item_Shop.shopstate = Shop::wait;
+				break;
+			}
+		}
+		case Shop::armorlist:
+		{
+			if (player->armorBag.empty())
+			{
+				break;
+			}
+			else
+			{
+				for (i = 0; i < player->armorBag.size(); i++)
+				{
+					if (ImGui::Button(player->armorBag.at(i).name, ImVec2(100, 100)))
+					{
+						player->unequipArmor();
+						player->equipArmor(i);
+						item_Shop.itemlists = Shop::shoplist;
+						break;
+					}
+				}
+				if (ImGui::Button("Back", ImVec2(200, 100)))
+				{
+					item_Shop.shopstate = Shop::wait;
+					break;
+				}
+			}
+			if (ImGui::Button("Back", ImVec2(200, 100)))
+			{
+				item_Shop.shopstate = Shop::wait;
+				break;
+			}
+			break;
+		}
+		}
 		break;
 	}
 	case Shop::viewAttackItems:
@@ -663,17 +781,28 @@ void Game::shop(Hero* &player)
 				{
 					break;
 				}
-				else
+				else if (item_Shop.affordattack(i, player->viewgold()))
 				{
 					player->buy_Attack(item_Shop, i);
 					item_Shop.shopstate = Shop::sell;
 					break;
 				}
+				else
+				{
+					item_Shop.shopstate = Shop::broke;
+					break;
+				}
 			}
+			
+		}
+		if (ImGui::Button("Back", ImVec2(200, 100)))
+		{
+			item_Shop.shopstate = Shop::wait;
+			break;
 		}
 
 		break;
-		
+
 	}
 	case Shop::viewDefenseItems:
 	{
@@ -685,13 +814,23 @@ void Game::shop(Hero* &player)
 				{
 					break;
 				}
-				else
+				else if (item_Shop.afforddefense(i, player->viewgold()))
 				{
 					player->buy_Armor(item_Shop, i);
 					item_Shop.shopstate = Shop::sell;
 					break;
 				}
+				else
+				{
+					item_Shop.shopstate = Shop::broke;
+					break;
+				}
 			}
+		}
+		if (ImGui::Button("Back", ImVec2(200, 100)))
+		{
+			item_Shop.shopstate = Shop::wait;
+			break;
 		}
 		break;
 	}
@@ -748,7 +887,14 @@ void Game::shop(Hero* &player)
 		break;
 	}
 	break;
-	}
 
-	
+	case Shop::broke:
+	{
+		if (ImGui::Button("Back", ImVec2(200, 100)))
+		{
+			item_Shop.shopstate = Shop::wait;
+			break;
+		}
+	}
+	}
 }

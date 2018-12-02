@@ -27,8 +27,7 @@ public:
 	Continue between;
 	void initializeladder();
 	void initializenewladder(Hero*);
-	void gameEnd();
-	const char* speak(int num);
+	bool gameEnd();
 	void draw(aie::Renderer2D * renderer, int state,int timer,aie::Font*);
 	Character* ptr;
 	int pchoice;

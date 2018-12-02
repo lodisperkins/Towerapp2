@@ -71,6 +71,12 @@ public:
 		{
 			nodetype<h>* iter = &(*this->first);
 			nodetype<h>* iter2 = &(*this->first->link);
+			if (iter->info == object && this->count == 1)
+			{
+				delete this->first;
+				this->initialize();
+				return;
+			}
 			while ((h)object != iter2->info)
 			{
 

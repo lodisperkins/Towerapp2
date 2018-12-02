@@ -28,6 +28,8 @@ public:
 	void drawtext(aie::Renderer2D*,aie::Font*,int);
 	void drawsprite(aie::Renderer2D*renderer,int timer,aie::Font* font);
 	void draw(aie::Renderer2D*renderer, int timer, aie::Font* font,int choice = 0);
+	void revive();
+	void reward();
 	Attack getAttacks(int i);
 
 	//The takeDamage function is called in the fight function and is only used to 
@@ -72,6 +74,7 @@ public:
 	aie::Texture*       welcometexture = new aie::Texture("./textures/welcome.png");
 	aie::Texture*       tower = new aie::Texture("./textures/tower.png");
 	aie::Texture*       hero = new aie::Texture("./textures/HeroSprites/Hero1Back.png");
+	aie::Texture*       corruptedhero = new aie::Texture("./textures/HeroSprites/Hero1Front.png");
 	aie::Texture*       shopkeep;
 
 	std::string getName();

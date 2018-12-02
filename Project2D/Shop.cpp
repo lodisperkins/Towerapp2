@@ -72,6 +72,30 @@ int Shop::getstocksize(int choice)
 	}
 }
 
+bool Shop::affordattack(int item,int gold)
+{
+	if (gold >= attackstock.at(item).mCost)
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+
+bool Shop::afforddefense(int item, int gold)
+{
+	if (gold >= armorstock.at(item).mCost)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Shop::draw(aie::Renderer2D*renderer, int timer, aie::Font* font)
 {
 	renderer->setUVRect(0.f, 0.f, 1, 1);
@@ -134,6 +158,12 @@ void Shop::drawtext(aie::Renderer2D * renderer, aie::Font *font)
 	{
 		spritestate = sold;
 		renderer->drawText(font, "Asher: Im all out of that right now. ", 300, 100, 100);
+		return;
+	}
+	case broke:
+	{
+		spritestate = idle;
+		renderer->drawText(font, "Asher: Looks like you don't have enough gold for that. (Trust me)", 300, 100, 100);
 		return;
 	}
 	}

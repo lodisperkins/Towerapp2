@@ -124,18 +124,23 @@ void Hero::unequipAttack(int choice)
 //needs to be looked at
 void Hero::initalizeHero()
 {
-	mGold = 40000;
-	mHealth = 0;
+	mGold = 0;
+	mHealth = 100;
 	mDefense = 5;
 	mStrength = .05f;
 	mAccuracy.min = 30;
 	mAccuracy.max = 90;
-	Attack starter1("Flail", 100, 10);
-	Attack starter2("Quick Attack", 10, 5);
-	Attack starter3("Fury Rush", 30, 2);
+	mArmor.defenseBoost = 0;
+	mArmor.health_Value = 0;
+	mArmor.strength_Value = 0;
+	mArmor.name = "none";
+	Attack starter1("Flail -5hp", 5, 10);
+	Attack starter2("Quick Attack -10hp", 10, 5);
+	Attack starter3("Fury Rush -30hp", 30, 2);
 	listofattacks[0] = starter1;
 	listofattacks[1] = starter2;
 	listofattacks[2] = starter3;
+	charTexture = corruptedhero;
 }
 
 void Hero::AssignStartingPoints(int op)
@@ -437,6 +442,16 @@ void Hero::draw(aie::Renderer2D*renderer, int timer, aie::Font* font,int choice)
 	drawsprite(renderer, timer, font);
 	//, 300, 100, 100);
 
+}
+
+void Hero::revive()
+{
+	mHealth += 150;
+}
+
+void Hero::reward()
+{
+	mGold += 500;
 }
 
 Attack Hero::getAttacks(int choice)

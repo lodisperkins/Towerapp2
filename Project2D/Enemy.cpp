@@ -10,7 +10,7 @@ void Enemy::takeDamage(float damageTaken)
 	if (damageTaken <= 0)
 	{
 
-		std::cout << name << " blocked!" << std::endl;
+		enemystate = blocked;
 	}
 
 	else if (mHealth > 0 && damageTaken >= 0)
@@ -105,18 +105,18 @@ void Enemy::drawtext(aie::Renderer2D*renderer,aie::Font*font,int choice)
 	{
 	case attacking:
 	{
-		renderer->drawText(font, "The monster used", 300, 100, 100);
-		renderer->drawText(font, listofattacks[choice].name, 400, 100, 100);
+		renderer->drawText(font, "The monster used", 300, 50, 50);
+		renderer->drawText(font, listofattacks[choice].name, 600, 50, 50);
 		break;
 	}
 	case defending:
 	{
-		renderer->drawText(font, "The monster raised its gaurd!", 300, 100, 100);
+		renderer->drawText(font, "The monster raised its gaurd!", 300, 50, 50);
 		break;
 	}
 	case blocked:
 	{
-		renderer->drawText(font, "It blocked your attack!", 300, 100, 100);
+		renderer->drawText(font, "It blocked your attack!", 300, 50, 50);
 		break;
 	}
 

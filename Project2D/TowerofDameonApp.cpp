@@ -20,8 +20,10 @@ bool TowerofDameonApp::startup()
 	
 	m_font = new aie::Font("./font/myfont.ttf", 32);
 	m_tower->initializeladder();
-
 	m_tower->gamestate = Game::newGame;
+	m_tower->initializeshop();
+	m_tower->player = new Hero;
+	m_tower->player->initalizeHero();
 	m_cameraX = 0;
 	m_cameraY = 0;
 	m_timer = 0;
@@ -33,7 +35,6 @@ bool TowerofDameonApp::startup()
 void TowerofDameonApp::shutdown()
 {
 	delete m_2dRenderer;
-	delete m_tower->item_Shop.shop;
 }
 
 void TowerofDameonApp::update(float deltaTime)
@@ -47,13 +48,7 @@ void TowerofDameonApp::update(float deltaTime)
 		{
 			case Game::newGame:
 			{
-				m_tower->initializeshop();
-				
-
-				m_tower->player = new Hero;
-				m_tower->player->initalizeHero();
 				int i = 0;
-				m_tower->gamestate = Game::newGame;
 				m_tower->Start.StartGame(i,m_tower->player);
 				if (i == 2)
 				{
@@ -78,7 +73,16 @@ void TowerofDameonApp::update(float deltaTime)
 			}
 			case(Game::endGame):
 			{
-
+				if (m_tower->gameEnd())
+				{
+					m_tower->player = new Hero;
+					m_tower->player->initalizeHero();
+					m_tower->initializeshop();
+					m_tower->gamestate = Game::newGame;
+					m_tower->initializenewladder(m_tower->player);
+					m_tower->Start.refresh();
+				}
+				break;
 			}
 		}
 

@@ -12,6 +12,7 @@ public:
 	void draw(aie::Renderer2D* renderer, int timer, aie::Font* font);
 
 	void drawText(aie::Renderer2D* renderer, aie::Font* font);
+	void refresh();
 	enum current{talk,assignpoints,end};
 	current startstate = talk;
 	int talknum=1;
