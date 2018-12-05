@@ -41,14 +41,15 @@ void Hero::fight(Character&foe, int attack)
 	//if the random accuracy value is less than the min required to land a hit no damage is dealt
 	if (Accuracy_Value < mAccuracy.min)
 	{
-		std::cout << "You missed!" << std::endl;
+		playerstate = missed;
+		listofattacks[attack].usage--;
 	}
 
 	//if the random accuracy value is more than the min required to land a hit and less than the maximum value required base damage is dealt
 	else if (Accuracy_Value > mAccuracy.min && Accuracy_Value < mAccuracy.max)
 	{
 		damageTaken = listofattacks[attack].mDamage + (listofattacks[attack].mDamage * mStrength);
-
+		listofattacks[attack].usage--;
 		foe.takeDamage(damageTaken);
 	}
 
@@ -56,7 +57,7 @@ void Hero::fight(Character&foe, int attack)
 	else if (Accuracy_Value > mAccuracy.max)
 	{
 		damageTaken = (listofattacks[attack].mDamage + (listofattacks[attack].mDamage * mStrength) * 2);
-
+		listofattacks[attack].usage--;
 		foe.takeDamage(damageTaken);
 	}
 }
@@ -420,6 +421,11 @@ void Hero::drawtext(aie::Renderer2D *renderer, aie::Font*font,int choice)
 	case victory:
 	{
 		renderer->drawText(font, "You destroyed them!", 300, 100, 100);
+		break;
+	}
+	case missed:
+	{
+		renderer->drawText(font, "You missed!", 300, 100, 100);
 		break;
 	}
 
