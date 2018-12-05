@@ -112,10 +112,7 @@ void Shop::draw(aie::Renderer2D*renderer, int timer, aie::Font* font)
 
 void Shop::drawtext(aie::Renderer2D * renderer, aie::Font *font)
 {
-	const char pgold = currentGold;
-	const char* ptr = &pgold;
-	renderer->drawText(font, ptr, 0, 720 - 32);
-	renderer->drawText(font, "Gold: ", 0, 720 - 64);
+	
 	switch (shopstate)
 	{
 	case(welcome):

@@ -23,12 +23,17 @@ public:
 	//The player has two lists that store their previously bought attacks and armor for later use
 	std::vector<Armor> armorBag;
 	std::vector<Attack> attackBag;
-	enum current {Attacking,Defending,stats,blocked,victory};
+	//Used to switch the state of the player to update the options in the user interface
+	enum current {Attacking,Defending,stats,blocked,victory,missed};
 	current playerstate;
+
+	//Used to draw text and sprites to the screen.
 	void drawtext(aie::Renderer2D*,aie::Font*,int);
 	void drawsprite(aie::Renderer2D*renderer,int timer,aie::Font* font);
 	void draw(aie::Renderer2D*renderer, int timer, aie::Font* font,int choice = 0);
+	//If the player has died, this function is used to decrement their gold by 500 and allow them to play again.
 	void revive();
+	//If the player has won a battle, this function is used to add to their gold by 500 and allow them to play again.
 	void reward();
 	Attack getAttacks(int i);
 
@@ -70,12 +75,9 @@ public:
 	int viewgold();
 	const char* getAttackName(int num);
 	
-	aie::Texture*       idletexture = new aie::Texture("./textures/idle.png");
-	aie::Texture*       welcometexture = new aie::Texture("./textures/welcome.png");
 	aie::Texture*       tower = new aie::Texture("./textures/tower.png");
 	aie::Texture*       hero = new aie::Texture("./textures/HeroSprites/Hero1Back.png");
 	aie::Texture*       corruptedhero = new aie::Texture("./textures/HeroSprites/Hero1Front.png");
-	aie::Texture*       shopkeep;
 
 	std::string getName();
 };
